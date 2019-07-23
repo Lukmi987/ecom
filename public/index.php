@@ -1,3 +1,5 @@
+<?php require_once("../recources/config.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

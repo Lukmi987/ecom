@@ -1,1 +1,3 @@
-functions.php
+<?php
+
+echo "Hello from functions.php";
