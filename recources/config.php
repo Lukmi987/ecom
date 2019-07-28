@@ -26,12 +26,11 @@ $dsn = "mysql:host=$host;dbname=$db";
 try{
 	$conn = new PDO($dsn, $username,$password);
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	if($conn){
-		echo "Connected to the the db successfully"; 
-	}
+	
 } catch (Exception $e){
 	echo $e->getMessage();
 	die();
+	
 }
 
 require_once("functions.php");
