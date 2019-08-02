@@ -81,5 +81,41 @@ DELIMETER;
 					}	
 }
 
+function get_products_in_cat_page($id){
+	global $conn;
+	try{
+	$sql = "SELECT * FROM products WHERE product_category_id = ?";
+ 	$stmt = $conn->prepare($sql);
+ 	$stmt->bindParam(1,$id);
+ 	$stmt->execute();
+ 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+ 	} catch(\Exception $e) {
+ 	throw $e;
+ 	}
+
+ 		foreach ( $result as $row){
+		//using herodoc https://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+ $product = <<<DELIMETER
+<div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="thumbnail">
+        <a href="item.php?id={$row['product_id']}"><img src="{$row['product_image']}" alt=""></a>
+        <div class="caption">
+            <h4 class="pull-right">&#36;{$row['product_price']}</h4>
+            <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
+            </h4>
+            <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+       <a class="btn btn-primary" target="_blank" href="item.php?id={$row['product_id']}">Add to cart</a>
+       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>      
+        </div>
+    </div>
+</div>
+DELIMETER;
+	echo $product;
+	}
+
+	//herodoc
+ }
+
 
 /***********************FRONT END FUNCTIONS******************/
