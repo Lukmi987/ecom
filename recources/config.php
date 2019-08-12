@@ -4,6 +4,7 @@ ob_start(); //output buffaring it will send a lot of request at the same time
 //if we use header() and do not have ob_start it will throw error like header has been already sent
 
 session_start();
+//session_destroy(); //for testing purpuses only
 
 defined("DS") ? null : define("DS", DIRECTORY_SEPARATOR);
 defined("TEMPLATE_FRONT") ? null : define("TEMPLATE_FRONT", __DIR__ . DS . "templates" . DS . "front");
