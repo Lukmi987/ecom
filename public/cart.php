@@ -44,9 +44,18 @@ if(isset($_GET['delete'])){
 
 function cart(){
 global $conn;
+    
+foreach($_SESSION as $name => $value){ 
+    if($value > 0){ 
+
+    if(substr($name, 0, 8) == "product_"){
+
+    $id = intval(str_replace("product_", "",$name));  //finds product_  in $name and is replaced by "" , so what is left is the id
+
     try{
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT * FROM products WHERE product_id = ?";
         $stmt = $conn->prepare($sql);
+        $stmt->bindParam(1, $id);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }catch(\Exception $e){
@@ -54,12 +63,14 @@ global $conn;
     }
 
 foreach ($result as $row) {
+
+    $sub = $row['product_price'] * $value;
      $product = <<<DELIMETER
      <tr>
                 <td>{$row['product_title']}</td>
-                <td>$23</td>
-                <td>3</td>
-                <td>2</td>
+                <td>&#36;{$row['product_price']}</td>
+                <td>{$value}</td>
+                <td>&#36;{$sub}</td>
                 <td><a class='btn btn-warning' href="cart.php?remove={$row['product_id']}"><span class='glyphicon glyphicon-minus'></span></a>
                 <a class='btn btn-success' href="cart.php?add={$row['product_id']}"><span class='glyphicon glyphicon-plus'></span></a>
                 </td>
@@ -68,6 +79,9 @@ foreach ($result as $row) {
 DELIMETER;
 echo $product;
     }
+   } // end of if substr condition
+  } // end if value >0
+ }// end of for each $session loop 
 }
 
 
