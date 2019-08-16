@@ -15,6 +15,8 @@ try{
 //($_SESSION['product_' . $_GET['add']]);
 foreach ($result as $row) {
     //So we are comparing the value in that session superglobal under the key for example: product_1 , which means we are not comparing the product_1  string against the quantity! But the value of it.
+   
+
     if($row['product_quantity'] != $_SESSION['product_' . $_GET['add']]){ //we can add the product till it reaches the real quantity in our db
     $_SESSION['product_' . $_GET['add']] +=1;   
         redirect('checkout.php');
@@ -52,6 +54,10 @@ global $conn;
     
     $total = 0;
     $item_quantity = 0;
+    $item_name = 1;
+    $item_number = 1;
+    $amount = 1;
+    $quantity = 1;
 foreach($_SESSION as $name => $value){ 
     if($value > 0){ 
     if(substr($name, 0, 8) == "product_"){
@@ -87,22 +93,26 @@ foreach ($result as $row) {
                 </td>
                 <td><a class='btn btn-danger' href="cart.php?delete={$row['product_id']}"><span class='glyphicon glyphicon-remove'></span></a></td>
     </tr>
+
+<input type="hidden" name="item_name_{$item_name}" value="hat">
+<input type="hidden" name="item_number_{$item_number}" value="123">
+<input type="hidden" name="amount_{$amount}" value="15.00">
+<input type="hidden" name="quantity_{$quantity}" value="15.00">
+
 DELIMETER;
 echo $product;
+    $item_name++;
+    $item_number++;
+    $amount++;
+    $quantity++;
     }
     $_SESSION['item_quantity'] = $item_quantity;
-
-//var_dump($total);
    } // end of if substr condition
   } // end if value >0
  }// end of for each $session loop 
 }
 
-
-
-// if(isset($_GET['add'])){
-//         $_SESSION['product_' . $_GET['add']] +=1;
-//         redirect("index.php");
+// in each input field in name attr we need to have an underscore just to provide paypal  a different item
 
 
 ?>
