@@ -116,7 +116,7 @@ echo $product;
 
 
 function show_paypal(){
-if(isset($_SESSION['item_quantity'])){ 
+if(isset($_SESSION['item_quantity']) && ($_SESSION['item_quantity'] >= 1)){ 
 
     $paypal_button = <<<DELIMETER
 
