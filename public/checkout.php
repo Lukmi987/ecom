@@ -1,6 +1,4 @@
 <?php require_once("../recources/config.php"); ?>
-<?php require_once("cart.php"); ?>
-
  <?php include(TEMPLATE_FRONT . DS . "header.php"); ?>
 
   <?php 
@@ -47,7 +45,7 @@
         </tbody>
     </table>
 
-<?php show_paypal(); ?>
+<?php echo show_paypal(); ?>
 </form>
 
 

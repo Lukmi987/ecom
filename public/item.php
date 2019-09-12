@@ -61,7 +61,7 @@
    
     <form action="">
         <div class="form-group">
-            <a href="cart.php?add=<?php echo $row['product_id']; ?>" class="btn btn-primary">Add</a>
+            <a href="../recources/cart.php?add=<?php echo $row['product_id']; ?>" class="btn btn-primary">Add</a>
         </div>
     </form>
 
