@@ -9,24 +9,25 @@
     $amount = $_GET['amt'];
     $currency = $_GET['cc'];
     $transaction = $_GET['tx'];
-    $status = $_GET['st'];
+    $status = $_GET['st'];}
 
-    try{
-      $sql = "INSERT INTO orders (order_amount, order_transaction, order_status, order_currency) VALUES(?,?,?,?)";
-      $stmt = $conn->prepare($sql);
-      $stmt->bindParam(1,$amount);
-      $stmt->bindParam(2,$transaction);
-      $stmt->bindParam(3,$status);
-      $stmt->bindParam(4,$currency);
-      $stmt->execute();
-    } catch(\Exception $e){
-        throw $e;
-    }
-  } else{
-  //redirect('index.php');
-}
+//     try{
+//       $sql = "INSERT INTO orders (order_amount, order_transaction, order_status, order_currency) VALUES(?,?,?,?)";
+//       $stmt = $conn->prepare($sql);
+//       $stmt->bindParam(1,$amount);
+//       $stmt->bindParam(2,$transaction);
+//       $stmt->bindParam(3,$status);
+//       $stmt->bindParam(4,$currency);
+//       $stmt->execute();
+//     } catch(\Exception $e){
+//         throw $e;
+//     }
+//   } else{
+//   //redirect('index.php');
+// }
 
-session_destroy();
+report();
+
 
 ?>
     <!-- Page Content -->

@@ -1,4 +1,4 @@
-<?php require_once("../recources/config.php"); ?>
+<?php require_once("config.php"); ?>
 
 <?php
 if(isset($_GET['add'])){
@@ -58,12 +58,14 @@ global $conn;
     $item_number = 1;
     $amount = 1;
     $quantity = 1;
+    $products_id = [];
+   
 foreach($_SESSION as $name => $value){ 
    if($value > 0){ 
     if(substr($name, 0, 8) == "product_"){
 
     $id = intval(str_replace("product_", "",$name));  //finds product_  in $name and is replaced by "" , so what is left is the id
-
+   $products_id[]= $id;
     try{
         $sql = "SELECT * FROM products WHERE product_id = ?";
         $stmt = $conn->prepare($sql);
@@ -111,7 +113,10 @@ echo $product;
         $_SESSION['item_quantity'] = $item_quantity;
    } // end of if substr condition
   } // end if value >0
+  
  }// end of for each $session loop 
+ $_SESSION['productsid'] = $products_id;
+
 }
 
 // in each input field in name attr we need to have an underscore just to provide paypal  a different item
@@ -130,6 +135,52 @@ DELIMETER;
 
 return $paypal_button; 
     }
+}
+
+
+
+function report(){
+global $conn;
+    
+    $total = 0;
+    $item_quantity = 0;
+   
+foreach($_SESSION as $name => $value){ 
+   if($value > 0){ 
+    if(substr($name, 0, 8) == "product_"){
+
+    $id = intval(str_replace("product_", "",$name));  //finds product_  in $name and is replaced by "" , so what is left is the id
+    try{
+        $sql = "SELECT * FROM products WHERE product_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(1, $id);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }catch(\Exception $e){
+        throw $e;
+    }
+
+
+foreach ($result as $row) {
+    
+    $sub = $row['product_price'] * $value;
+    $item_quantity += $value;
+    try{
+        $sql ="INSERT INTO reports(product_id,product_price,product_quantity) VALUES(?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(1,$id);
+        $stmt->bindParam(2,$row['product_price']);
+        $stmt->bindParam(3,$value);
+        $stmt->execute();
+    }catch(\Exception $e){
+            throw $e;
+        }
+    }
+        $total += $sub;
+        echo $item_quantity;
+   } // end of if substr condition
+  } // end if value >0
+ }// end of for each $session loop
 }
 
 ?>
