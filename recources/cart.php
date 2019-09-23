@@ -141,7 +141,30 @@ return $paypal_button;
 
 function report(){
 global $conn;
-    
+
+if(isset($_GET['tx'])){
+    $amount = $_GET['amt'];
+    $currency = $_GET['cc'];
+    $transaction = $_GET['tx'];
+    $status = $_GET['st'];
+// for one order id i can have multiple products in a cart
+    $lastId = 0;
+    try{
+      $sql = "INSERT INTO orders (order_amount, order_transaction, order_status, order_currency) VALUES(?,?,?,?)";
+      $stmt = $conn->prepare($sql);
+      $stmt->bindParam(1,$amount);
+      $stmt->bindParam(2,$transaction);
+      $stmt->bindParam(3,$status);
+      $stmt->bindParam(4,$currency);
+      $stmt->execute();
+      $lastId = intval($conn->lastInsertId()); 
+    } catch(\Exception $e){
+        throw $e;
+    }
+  } else{
+  //redirect('index.php');
+}
+
     $total = 0;
     $item_quantity = 0;
    
@@ -162,15 +185,19 @@ foreach($_SESSION as $name => $value){
 
 
 foreach ($result as $row) {
+    var_dump($result);
     
     $sub = $row['product_price'] * $value;
+    $product_title = $row['product_title'];
     $item_quantity += $value;
     try{
-        $sql ="INSERT INTO reports(product_id,product_price,product_quantity) VALUES(?,?,?)";
+        $sql ="INSERT INTO reports(product_id,order_id,product_price,product_title,product_quantity) VALUES(?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(1,$id);
-        $stmt->bindParam(2,$row['product_price']);
-        $stmt->bindParam(3,$value);
+        $stmt->bindParam(2,$lastId);
+        $stmt->bindParam(3,$row['product_price']);
+        $stmt->bindParam(4,$product_title);
+        $stmt->bindParam(5,$value);
         $stmt->execute();
     }catch(\Exception $e){
             throw $e;
@@ -178,9 +205,9 @@ foreach ($result as $row) {
     }
         $total += $sub;
         echo $item_quantity;
-   } // end of if substr condition
-  } // end if value >0
- }// end of for each $session loop
-}
+    } // end of if substr condition
+   } // end if value >0
+  }// end of for each $session loop
+ } // isset get[tx]
 
 ?>
