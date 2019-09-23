@@ -147,9 +147,9 @@ if(isset($_GET['tx'])){
     $currency = $_GET['cc'];
     $transaction = $_GET['tx'];
     $status = $_GET['st'];
-// for one order id i can have multiple products in a cart
+// for one order transaction i can have multiple products in a cart
     $lastId = 0;
-    try{
+    try{ //insert current order into db
       $sql = "INSERT INTO orders (order_amount, order_transaction, order_status, order_currency) VALUES(?,?,?,?)";
       $stmt = $conn->prepare($sql);
       $stmt->bindParam(1,$amount);
@@ -161,19 +161,17 @@ if(isset($_GET['tx'])){
     } catch(\Exception $e){
         throw $e;
     }
-  } else{
-  //redirect('index.php');
-}
-
+   
     $total = 0;
     $item_quantity = 0;
    
 foreach($_SESSION as $name => $value){ 
    if($value > 0){ 
     if(substr($name, 0, 8) == "product_"){
-
     $id = intval(str_replace("product_", "",$name));  //finds product_  in $name and is replaced by "" , so what is left is the id
-    try{
+     
+
+    try{ //fetch the product according current id
         $sql = "SELECT * FROM products WHERE product_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(1, $id);
@@ -185,8 +183,6 @@ foreach($_SESSION as $name => $value){
 
 
 foreach ($result as $row) {
-    var_dump($result);
-    
     $sub = $row['product_price'] * $value;
     $product_title = $row['product_title'];
     $item_quantity += $value;
@@ -209,5 +205,5 @@ foreach ($result as $row) {
    } // end if value >0
   }// end of for each $session loop
  } // isset get[tx]
-
+}
 ?>
