@@ -221,5 +221,36 @@ DELIMETER;
   }
 
 
+function display_orders(){
+  global $conn;
+  try{
+    $sql = "SELECT * FROM orders";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }catch(\Exception $e){
+    throw $e;
+  }
+
+foreach ($result as $row) {
+  
+  $orders = <<<DELIMETER
+
+  <tr>
+    <td>{$row['order_id']}</td>
+    <td>{$row['order_amount']}</td>
+    <td>{$row['order_transaction']}</td>
+    <td>{$row['order_currency']}</td>
+    <td>{$row['order_status']}</td>
+  </tr>
+
+DELIMETER;
+ echo $orders; 
+  }
+}
+
+
+
+
 
 /***********************FRONT END FUNCTIONS******************/
