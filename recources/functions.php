@@ -221,7 +221,7 @@ DELIMETER;
   }
 
 
-function display_orders(){
+function process_transaction(){
   global $conn;
   try{
     $sql = "SELECT * FROM orders";
@@ -233,7 +233,7 @@ function display_orders(){
   }
 
 foreach ($result as $row) {
-  
+
   $orders = <<<DELIMETER
 
   <tr>
@@ -242,6 +242,7 @@ foreach ($result as $row) {
     <td>{$row['order_transaction']}</td>
     <td>{$row['order_currency']}</td>
     <td>{$row['order_status']}</td>
+    <td><a class="btn btn-danger" href="../../recources/templates/back/delete_order.php?id={$row['order_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
   </tr>
 
 DELIMETER;

@@ -6,7 +6,7 @@
 
 </h1>
 </div>
-
+<h4 class="bg bg-success"><?php display_message();?></h4>
 <div class="row">
 <table class="table table-hover">
     <thead>
@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-        <?php display_orders(); ?>
+        <?php process_transaction() ?>
     </tbody>
 </table>
 </div>
