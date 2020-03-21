@@ -1,16 +1,14 @@
 
 
-     
 
-             <div class="row">
+
+<div class="row">
 
 <h1 class="page-header">
    All Products
 
 </h1>
 <table class="table table-hover">
-
-
     <thead>
 
       <tr>
@@ -30,7 +28,7 @@
             <td>Category</td>
             <td>123</td>
         </tr>
-      
+
 
 
   </tbody>
@@ -46,12 +44,8 @@
 
 
 
-                
-                 
+
+
 
 
              </div>
-
-          
-
-      

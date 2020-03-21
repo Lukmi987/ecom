@@ -223,31 +223,34 @@ DELIMETER;
 	/***********************Add products in Admin******************/
 function add_product(){
 global $conn;
-if(isset($_POST['publish'])){
 
-		$product_title = escape_string($POST['product_title']);
-		$product_category_id = escape_string($POST['product_category_id']);
-		$product_price = escape_string($POST['product_price']);
-		$product_description = escape_string($POST['product_description']);
-		$short_desc = escape_string($POST['short_desc']);
-		$product_quantity = escape_string($POST['product_quantity']);
+if(isset($_POST['publish'])){
+	
+		$product_title = escape_string($_POST['product_title']);
+		$product_category_id = intval($_POST['product_category_id']);
+		$product_price = intval($_POST['product_price']);
+		$product_quantity = intval($_POST['product_quantity']);
+		$product_description = escape_string($_POST['product_description']);
+		$short_desc = escape_string($_POST['short_desc']);
 		$product_image = escape_string($_FILES['file']['name']);
-		$image_temp_location = escape_string($_FILES['file']['temp_name']);
+		$image_temp_location = escape_string($_FILES['file']['tmp_name']);
 
 		move_uploaded_file($image_temp_location, UPLOAD_DIRECTORY . DS . $product_image);
 
 		try{
-			$sql = 'INSERT INTO products(product_title, product_category_id,product_price, product_quantity,product_description, short_desc, product_image) VALUES(?,?,?,?,?,?,?)';
+			$sql = "INSERT INTO products (product_title,product_category_id,product_price,product_description,short_desc,product_quantity,product_image) VALUES (:product_title, :product_category_id, :product_price, :product_description, :short_desc, :product_quantity, :product_image)";
 			$stmt = $conn->prepare($sql);
-			$stmt->bindParam(1,$product_title);
-			$stmt->bindParam(2,$product_category_id);
-			$stmt->bindParam(3,$product_price);
-			$stmt->bindParam(4,$product_quantity);
-			$stmt->bindParam(5,$product_description);
-			$stmt->bindParam(6,$short_desc);
-			$stmt->bindParam(7,$product_image);
-			set_message("New Product Just Added");
-			redirect('index.php?products');
+			$stmt->bindParam(':product_title',$product_title);
+			$stmt->bindParam(':product_category_id',$product_category_id);
+			$stmt->bindParam(':product_price',$product_price);
+			$stmt->bindParam(':product_description',$product_description);
+			$stmt->bindParam(':short_desc',$short_desc);
+			$stmt->bindParam(':product_quantity',$product_quantity);
+			$stmt->bindParam(':product_image',$product_image);
+			$stmt->execute();
+			$lastId = intval($conn->lastInsertId());
+			set_message("New Product with id {$lastId} Just Added");
+			//redirect("index.php?products");
 		}catch (\Exception $e){
 			throw $e;
 		}
