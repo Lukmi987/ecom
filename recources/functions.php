@@ -42,7 +42,31 @@ function fetch_array($result){
 }
 
 
-/***********************FRONT END FUNCTIONS******************/
+/***********************Back END FUNCTIONS******************/
+function display_orders(){
+	global $conn;
+	try{
+	$sql = "SELECT * FROM orders";
+ 	$stmt = $conn->prepare($sql);
+ 	$stmt->execute();
+ 	$result= $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 	} catch(\Exception $e) {
+ 	throw $e;
+ 	}
+	foreach($result as $row){
+	 $orders = <<<DELIMETER
+	 <tr>
+	 	<td>{$row['order_id']}</td>
+		<td>{$row['order_amount']}</td>
+		<td>{$row['order_transaction']}</td>
+		<td>{$row['order_currency']}</td>
+		<td>{$row['order_status']}</td>
+	 </tr>
+DELIMETER;
+	 echo $orders;
+ }
+}
+
 function get_products(){
 	global $conn;
 	try{
@@ -225,7 +249,7 @@ function add_product(){
 global $conn;
 
 if(isset($_POST['publish'])){
-	
+
 		$product_title = escape_string($_POST['product_title']);
 		$product_category_id = intval($_POST['product_category_id']);
 		$product_price = intval($_POST['product_price']);

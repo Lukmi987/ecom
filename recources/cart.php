@@ -159,12 +159,12 @@ if(isset($_GET['tx'])){
 // for one order transaction i can have multiple products in a cart
     $lastId = 0;
     try{ //insert current order into db
-      $sql = "INSERT INTO orders (order_amount, order_transaction, order_status, order_currency) VALUES(?,?,?,?)";
+      $sql = "INSERT INTO orders (order_amount, order_transaction, order_currency, order_status) VALUES(?,?,?,?)";
       $stmt = $conn->prepare($sql);
       $stmt->bindParam(1,$amount);
       $stmt->bindParam(2,$transaction);
-      $stmt->bindParam(3,$status);
-      $stmt->bindParam(4,$currency);
+      $stmt->bindParam(3,$currency);
+      $stmt->bindParam(4,$status);
       $stmt->execute();
       $lastId = intval($conn->lastInsertId());
     } catch(\Exception $e){
