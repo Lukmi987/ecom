@@ -26,7 +26,7 @@ function query($sql) {
 	try{
 	$stmt = $conn->prepare($sql);
     return $stmt->execute();
-   
+
 	} catch (\Exception $e) {
 		throw $e;
 	}
@@ -65,7 +65,7 @@ function get_products(){
             <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
             </h4>
             <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-       <a class="btn btn-primary" target="_blank" href="../recources/cart.php?add={$row['product_id']}">Add to cart</a>      
+       <a class="btn btn-primary" target="_blank" href="../recources/cart.php?add={$row['product_id']}">Add to cart</a>
         </div>
     </div>
 </div>
@@ -77,23 +77,23 @@ DELIMETER;
 }
 
 function get_categories(){
-	                
-	             global $conn;   
+
+	             global $conn;
 	                try{
                     $sql = "SELECT * FROM categories";
-                    	 $stmt = $conn->prepare($sql); 
+                    	 $stmt = $conn->prepare($sql);
                     	 $stmt->execute();
                     	 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					foreach ( $result as $row) {
 					 $category_links = <<<DELIMETER
 					 <a href="category.php?id={$row['cat_id']}" class='list-group-item'>{$row['cat_title']}</a>
 DELIMETER;
-	
-							echo $category_links;	
+
+							echo $category_links;
 						}
 					} catch (\Exception $e){
 						throw $e;
-					}	
+					}
 }
 
 function get_products_in_cat_page($id){
@@ -121,7 +121,7 @@ function get_products_in_cat_page($id){
             </h4>
             <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
        <a class="btn btn-primary" target="_blank" href="item.php?id={$row['product_id']}">Add to cart</a>
-       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>      
+       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
         </div>
     </div>
 </div>
@@ -156,7 +156,7 @@ DELIMETER;
             </h4>
             <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
        <a class="btn btn-primary" target="_blank" href="item.php?id={$row['product_id']}">Add to cart</a>
-       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>      
+       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
         </div>
     </div>
 </div>
@@ -169,7 +169,7 @@ DELIMETER;
 
  function login_user(){
  	global $conn;
- 	if(isset($_POST['submit'])){ 
+ 	if(isset($_POST['submit'])){
   $username = $_POST['username'];
   $password = intval($_POST['password']);
   var_dump($username);
@@ -178,38 +178,38 @@ DELIMETER;
   	$sql = "SELECT * FROM users WHERE username = :username AND  password = :password";
 
   	$stmt = $conn->prepare($sql);
-  	
+
   	$stmt->bindParam(':username',$username);
 
   	$stmt->bindParam(':password',$password);
   	$stmt->execute();
- 
+
   }catch(\Exception $e){
   		throw $e;
    }
     if($stmt->fetchColumn() == 0){
     	set_message('Your pswd or username is wrong!!');
   		redirect("login.php");
-  		
+
   	}else{
   		redirect("admin");
   		}
   	}
-  } 
+  }
 
   function send_message(){
-  	if(isset($_POST['submit'])){ 
+  	if(isset($_POST['submit'])){
   	$to = "komprs.l@gmail.com";
   	$from_name = $_POST['name'];
   	$subject = $_POST['subject'];
-  	$email = $_POST['email']; 
+  	$email = $_POST['email'];
   	$message = $_POST['message'];
-  	
+
   	$headers = "From: {$from_name} {email}";
 
   	$result = mail($to, $subject, $message, $headers);
-  	
-  	
+
+
   	if(!$result){
   		set_message("Sorry we could not send your messge");
   		redirect("contact.php");
@@ -220,6 +220,39 @@ DELIMETER;
   	}
   }
 
+	/***********************Add products in Admin******************/
+function add_product(){
+global $conn;
+if(isset($_POST['publish'])){
+
+		$product_title = escape_string($POST['product_title']);
+		$product_category_id = escape_string($POST['product_category_id']);
+		$product_price = escape_string($POST['product_price']);
+		$product_description = escape_string($POST['product_description']);
+		$short_desc = escape_string($POST['short_desc']);
+		$product_quantity = escape_string($POST['product_quantity']);
+		$product_image = escape_string($_FILES['file']['name']);
+		$image_temp_location = escape_string($_FILES['file']['temp_name']);
+
+		move_uploaded_file($image_temp_location, UPLOAD_DIRECTORY . DS . $product_image);
+
+		try{
+			$sql = 'INSERT INTO products(product_title, product_category_id,product_price, product_quantity,product_description, short_desc, product_image) VALUES(?,?,?,?,?,?,?)';
+			$stmt = $conn->prepare($sql);
+			$stmt->bindParam(1,$product_title);
+			$stmt->bindParam(2,$product_category_id);
+			$stmt->bindParam(3,$product_price);
+			$stmt->bindParam(4,$product_quantity);
+			$stmt->bindParam(5,$product_description);
+			$stmt->bindParam(6,$short_desc);
+			$stmt->bindParam(7,$product_image);
+			set_message("New Product Just Added");
+			redirect('index.php?products');
+		}catch (\Exception $e){
+			throw $e;
+		}
+	}
+}
 
 
 /***********************FRONT END FUNCTIONS******************/

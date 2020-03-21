@@ -1,9 +1,10 @@
 <?php require_once("../recources/config.php"); ?>
  <?php include(TEMPLATE_FRONT . DS . "header.php"); ?>
 
-  <?php 
+  <?php
   //if(isset($_SESSION['product_1'])){
-    //echo $_SESSION['product_1'];
+    //print_r($_SESSION['product_1']);
+
   // echo $_SESSION['item_total'];
   // echo "  ";
   // echo $_SESSION['item_quantity'];
@@ -13,7 +14,7 @@
     <div class="container">
 
 
-<!-- /.row --> 
+<!-- /.row -->
 
 <div class="row">
 
@@ -34,13 +35,13 @@
            <th>Price</th>
            <th>Quantity</th>
            <th>Sub-total</th>
-     
+
           </tr>
         </thead>
         <tbody>
             <tr>
                <?php cart(); ?>
-              
+
             </tr>
         </tbody>
     </table>
@@ -51,7 +52,7 @@
 
 
 <!--  ***********CART TOTALS*************-->
-            
+
 <div class="col-xs-4 pull-right ">
 <h2>Cart Totals</h2>
 
@@ -60,8 +61,8 @@
 <tr class="cart-subtotal">
 <th>Items:</th>
 <td><span class="amount">
-  <?php 
-  echo isset($_SESSION['item_quantity']) ? $_SESSION['item_quantity'] : $_SESSION['item_quantity'] = "0";
+  <?php
+  echo isset($_SESSION['item_quantity']) ? $_SESSION['item_quantity'] : $_SESSION['item_quantity'] = "0"; //Ternary OperatorThe expression (expr1) ? (expr2) : (expr3) evaluates to expr2 if expr1 evaluates to TRUE, and expr3 if expr1 evaluates to FALSE.
 ?>
 </span></td>
 </tr>
@@ -73,7 +74,7 @@
 <tr class="order-total">
 <th>Order Total</th>
 <td><strong><span class="amount">&#36
-<?php 
+<?php
   echo isset($_SESSION['item_total']) ? $_SESSION['item_total'] : $_SESSION['item_total'] = "0";
 ?>
 </span></strong> </td>
@@ -90,4 +91,4 @@
  </div><!--Main Content-->
 
 
-<?php include(TEMPLATE_FRONT . DS . "footer.php"); ?>         
+<?php include(TEMPLATE_FRONT . DS . "footer.php"); ?>
