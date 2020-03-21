@@ -148,7 +148,7 @@ return $paypal_button;
 
 
 
-function report(){
+function proccess_transaction(){
 global $conn;
 
 if(isset($_GET['tx'])){

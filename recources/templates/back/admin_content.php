@@ -1,3 +1,17 @@
+              <!-- Page Heading -->
+              <div class="row">
+                  <div class="col-lg-12">
+                      <h1 class="page-header">
+                          Dashboard <small>Statistics Overview</small>
+                      </h1>
+                      <ol class="breadcrumb">
+                          <li class="active">
+                              <i class="fa fa-dashboard"></i> Dashboard
+                          </li>
+                      </ol>
+                  </div>
+              </div>
+
                 <div class="row">
 
                             <div class="col-lg-4 col-md-6">
@@ -46,7 +60,7 @@
                             </a>
                         </div>
                     </div>
-          
+
                     <div class="col-lg-4 col-md-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -69,10 +83,10 @@
                             </a>
                         </div>
                     </div>
-            
-              
+
+
                 </div>
-        
+
                 <!-- /.row -->
 
 

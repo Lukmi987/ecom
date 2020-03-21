@@ -61,6 +61,7 @@ function display_orders(){
 		<td>{$row['order_transaction']}</td>
 		<td>{$row['order_currency']}</td>
 		<td>{$row['order_status']}</td>
+		<td><a class="btn btn-danger" href="../../recources/templates/back/delete_order.php?id={$row['order_id']}"><span class="glyphicon glyphicon-remove"></span></td>
 	 </tr>
 DELIMETER;
 	 echo $orders;

@@ -1,9 +1,9 @@
 <?php require_once("../recources/config.php");
 
  include(TEMPLATE_FRONT . DS . "header.php");
- 
-  
-report();
+
+
+proccess_transaction();
 
 
 ?>
@@ -16,4 +16,4 @@ report();
  </div><!--Main Content-->
 
 
-<?php include(TEMPLATE_FRONT . DS . "footer.php"); ?>         
+<?php include(TEMPLATE_FRONT . DS . "footer.php"); ?>
