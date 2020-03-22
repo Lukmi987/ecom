@@ -307,11 +307,30 @@ if(isset($_POST['publish'])){
 			$stmt->execute();
 			$lastId = intval($conn->lastInsertId());
 			set_message("New Product with id {$lastId} Just Added");
-			//redirect("index.php?products");
+			redirect("index.php?products");
 		}catch (\Exception $e){
 			throw $e;
 		}
 	}
+}
+
+function show_categories_add_product(){
+global $conn;
+
+	try{
+      	$sql = "SELECT * FROM categories";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				foreach ( $result as $row) {
+$category_options = <<<DELIMETER
+<option value="{$row{'cat_id'}}">{$row{'cat_title'}}</option>
+DELIMETER;
+				echo $category_options;
+				}
+			 }catch (\Exception $e){
+						throw $e;
+			}
 }
 
 
