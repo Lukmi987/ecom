@@ -1,5 +1,6 @@
 <?php
 
+$upload_directory = "uploads"; //we make it global variable, every time we want to change upload directory we change it here on top
 // helper fucntions
 
 function redirect($location){
@@ -69,6 +70,13 @@ DELIMETER;
 }
 
 /********************** Admin Products ************/
+
+function display_image($picture){ // concatinate upload directory with the picture
+global $upload_directory;
+	return $upload_directory . DS . $picture;
+}
+
+
 function get_products_in_admin(){
 	global $conn;
 	try{
@@ -85,11 +93,12 @@ function get_products_in_admin(){
 		//with Ampersand(&) we separate parameters
 
 $category = show_product_category_title($row['product_category_id']);
+$product_image = display_image($row['product_image']);
 $product = <<<DELIMETER
 <tr>
 			 <td>{$row['product_id']}</td>
 			 <td>{$row['product_title']}<br>
-				 <a href="index.php?edit_product&id={$row['product_id']}"><img src="http://placehold.it/62x62" alt=""></a>
+				 <a href="index.php?edit_product&id={$row['product_id']}"><img width='100'  src="../../recources/{$product_image}" alt=""></a>
 			 </td>
 			 <td>{$category}</td>
 			<td>{$row['product_price']}</td>
@@ -131,10 +140,11 @@ function get_products(){
 
 	foreach ( $result as $row){
 		//using herodoc https://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+$product_image = display_image($row['product_image']);
  $product = <<<DELIMETER
 <div class="col-sm-4 col-lg-4 col-md-4">
     <div class="thumbnail">
-        <a href="item.php?id={$row['product_id']}"><img src="{$row['product_image']}" alt=""></a>
+        <a href="item.php?id={$row['product_id']}"><img src="../recources/{$product_image}" alt=""></a>
         <div class="caption">
             <h4 class="pull-right">&#36;{$row['product_price']}</h4>
             <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
@@ -301,17 +311,18 @@ global $conn;
 
 if(isset($_POST['publish'])){
 
-		$product_title = escape_string($_POST['product_title']);
+		$product_title = ($_POST['product_title']);
 		$product_category_id = intval($_POST['product_category_id']);
 		$product_price = intval($_POST['product_price']);
 		$product_quantity = intval($_POST['product_quantity']);
-		$product_description = escape_string($_POST['product_description']);
-		$short_desc = escape_string($_POST['short_desc']);
-		$product_image = escape_string($_FILES['file']['name']);
-		$image_temp_location = escape_string($_FILES['file']['tmp_name']);
+		$product_description = ($_POST['product_description']);
+		$short_desc = ($_POST['short_desc']);
+		$product_image = $_FILES['file']['name'];
+		$file_tmp_name = $_FILES['file']['tmp_name'];
 
-		move_uploaded_file($image_temp_location, UPLOAD_DIRECTORY . DS . $product_image);
-
+		print_r($_POST['product_title']);
+		exit();
+move_uploaded_file($file_tmp_name, UPLOAD_DIRECTORY . DS . $product_image);
 		try{
 			$sql = "INSERT INTO products (product_title,product_category_id,product_price,product_description,short_desc,product_quantity,product_image) VALUES (:product_title, :product_category_id, :product_price, :product_description, :short_desc, :product_quantity, :product_image)";
 			$stmt = $conn->prepare($sql);
