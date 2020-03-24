@@ -241,11 +241,29 @@ $category = <<<DELIMITER
 		<tr>
 				<td>{$cat_id}</td>
 				<td>{$cat_title}</td>
+				<td><a class="btn btn-danger" href="../../recources/templates/back/delete_category.php?id={$cat_id}"><span class="glyphicon glyphicon-remove"</span></a></td>
+
 		</tr>
 DELIMITER;
 		echo $category;
 	 }
  }
+
+ function add_category() {
+	 if(isset($_POST['add_category'])){
+		 if(empty($_POST['title']) || $_POST ==" "){
+			 set_message('Sorry, this field can not be empty!!');
+		 } else{
+		 global $conn;
+		 $sql = "INSERT INTO categories(cat_title) VALUES(?)";
+		 $cat_title = $_POST['title'];
+		 $stmt = $conn->prepare($sql);
+		 $stmt->bindParam(1,$cat_title);
+		 $stmt->execute();
+		 redirect("index.php?categories");
+	 }
+ }
+}
 
  function get_products_in_shop_page(){
 	global $conn;

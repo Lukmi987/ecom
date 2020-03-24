@@ -1,15 +1,16 @@
+<?php add_category(); ?>
 <div class="col-md-4">
-
+  <h3 class="bg-success"><?php display_message(); ?></h3>
     <form action="" method="post">
 
         <div class="form-group">
             <label for="category-title">Title</label>
-            <input type="text" class="form-control">
+            <input type="text" name="title" class="form-control">
         </div>
 
         <div class="form-group">
 
-            <input type="submit" class="btn btn-primary" value="Add Category">
+            <input type="submit" name="add_category" class="btn btn-primary" value="Add Category">
         </div>
 
 
