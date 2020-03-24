@@ -220,6 +220,33 @@ DELIMETER;
 	//herodoc
  }
 
+ /**************************** Categories in  Admin ***************/
+
+ function show_categories_in_admin() {
+	 global $conn;
+	 try{
+		 	$sql ="SELECT * FROM categories";
+			$stmt = $conn->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	 } catch(\Exception $e){
+		 throw $e;
+	 }
+
+	 foreach($result as $row){
+		$cat_id = $row['cat_id'];
+		$cat_title = $row['cat_title'];
+
+$category = <<<DELIMITER
+		<tr>
+				<td>{$cat_id}</td>
+				<td>{$cat_title}</td>
+		</tr>
+DELIMITER;
+		echo $category;
+	 }
+ }
+
  function get_products_in_shop_page(){
 	global $conn;
 	try{

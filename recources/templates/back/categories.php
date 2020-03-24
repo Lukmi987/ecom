@@ -1,16 +1,16 @@
 <div class="col-md-4">
-    
+
     <form action="" method="post">
-    
+
         <div class="form-group">
             <label for="category-title">Title</label>
             <input type="text" class="form-control">
         </div>
 
         <div class="form-group">
-            
+
             <input type="submit" class="btn btn-primary" value="Add Category">
-        </div>      
+        </div>
 
 
     </form>
@@ -32,27 +32,9 @@
 
 
     <tbody>
-        <tr>
-            <td>20</td>
-            <td>Example Title</td>
-        </tr>
+ <?php show_categories_in_admin(); ?>
     </tbody>
 
         </table>
 
 </div>
-
-
-
-                
-
-
-
-
-
-
-
-
-
-
-
