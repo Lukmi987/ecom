@@ -1,17 +1,17 @@
- <?php 
+ <?php
  require_once("../recources/config.php");
- include(TEMPLATE_FRONT . DS . "header.php"); 
+ include(TEMPLATE_FRONT . DS . "header.php");
  ?>
     <!-- Page Content -->
 <div class="container">
 
        <!-- Side Navigation -->
 
-<?php include(TEMPLATE_FRONT . DS . "side_nav.php"); 
+<?php include(TEMPLATE_FRONT . DS . "side_nav.php");
 
     global $conn;
     try{
-    $sql = "SELECT * FROM products WHERE product_id = ". escape_string($_GET['id']) . "";
+    $sql = "SELECT * FROM products WHERE product_id = ". ($_GET['id']) . "";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -20,8 +20,8 @@
     }
 
     foreach($result as $row):
-    
-    
+
+
 ?>
 
 <div class="col-md-9">
@@ -31,14 +31,14 @@
 <div class="row">
 
     <div class="col-md-7">
-       <img class="img-responsive" src="http://placehold.it/320*150" alt="">
+       <img class="img-responsive" src="../recources/<?php echo display_image($row['product_image']); ?>" alt="">
 
     </div>
 
     <div class="col-md-5">
 
         <div class="thumbnail">
-         
+
 
     <div class="caption-full">
         <h4><a href="#"><?php echo $row['product_title'];?></a> </h4>
@@ -46,7 +46,7 @@
         <h4 class=""><?php echo "&#36;" . $row['product_price']; ?></h4>
 
     <div class="ratings">
-     
+
         <p>
             <span class="glyphicon glyphicon-star"></span>
             <span class="glyphicon glyphicon-star"></span>
@@ -58,7 +58,7 @@
     </div>
         <p> <?php echo $row['short_desc']; ?></p>
 
-   
+
     <form action="">
         <div class="form-group">
             <a href="../recources/cart.php?add=<?php echo $row['product_id']; ?>" class="btn btn-primary">Add</a>
@@ -66,7 +66,7 @@
     </form>
 
     </div>
- 
+
 </div>
 
 </div>
@@ -96,7 +96,7 @@
     <div role="tabpanel" class="tab-pane active" id="home">
 
 <p></p>
-    <p>       
+    <p>
      <?php echo $row['product_description']; ?>
  </p>
     </div>
@@ -176,7 +176,7 @@
         </div>
 
             <br>
-            
+
              <div class="form-group">
              <textarea name="" id="" cols="60" rows="10" class="form-control"></textarea>
             </div>

@@ -144,7 +144,7 @@ $product_image = display_image($row['product_image']);
  $product = <<<DELIMETER
 <div class="col-sm-4 col-lg-4 col-md-4">
     <div class="thumbnail">
-        <a href="item.php?id={$row['product_id']}"><img src="../recources/{$product_image}" alt=""></a>
+        <a href="item.php?id={$row['product_id']}"><img src="../recources/{$product_image}" alt="">
         <div class="caption">
             <h4 class="pull-right">&#36;{$row['product_price']}</h4>
             <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
@@ -196,17 +196,20 @@ function get_products_in_cat_page($id){
 
  		foreach ( $result as $row){
 		//using herodoc https://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+
+$product_image = display_image($row['product_image']);
  $product = <<<DELIMETER
 <div class="col-sm-4 col-lg-4 col-md-4">
     <div class="thumbnail">
-        <a href="item.php?id={$row['product_id']}"><img src="{$row['product_image']}" alt=""></a>
+        <a href="item.php?id={$row['product_id']}"><img src="../recources/{$product_image}" alt=""></a>
         <div class="caption">
             <h4 class="pull-right">&#36;{$row['product_price']}</h4>
             <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
             </h4>
             <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-       <a class="btn btn-primary" target="_blank" href="item.php?id={$row['product_id']}">Add to cart</a>
-       <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
+       <a class="btn btn-primary" target="_blank" href="../recources/cart.php?add={$row['product_id']}">Buy now</a>
+
+			 <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
         </div>
     </div>
 </div>
@@ -231,16 +234,17 @@ DELIMETER;
 
  		foreach ( $result as $row){
 		//using herodoc https://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+$product_image = display_image($row['product_image']);
  $product = <<<DELIMETER
 <div class="col-sm-4 col-lg-4 col-md-4">
     <div class="thumbnail">
-        <a href="item.php?id={$row['product_id']}"><img src="{$row['product_image']}" alt=""></a>
+        <a href="item.php?id={$row['product_id']}"><img src="../recources/{$product_image}" alt=""></a>
         <div class="caption">
             <h4 class="pull-right">&#36;{$row['product_price']}</h4>
             <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
             </h4>
             <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-       <a class="btn btn-primary" target="_blank" href="item.php?id={$row['product_id']}">Add to cart</a>
+       <a class="btn btn-primary" href="../recources/cart.php?add={$row['product_id']}">Buy now</a>
        <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
         </div>
     </div>
@@ -320,8 +324,6 @@ if(isset($_POST['publish'])){
 		$product_image = $_FILES['file']['name'];
 		$file_tmp_name = $_FILES['file']['tmp_name'];
 
-		print_r($_POST['product_title']);
-		exit();
 move_uploaded_file($file_tmp_name, UPLOAD_DIRECTORY . DS . $product_image);
 		try{
 			$sql = "INSERT INTO products (product_title,product_category_id,product_price,product_description,short_desc,product_quantity,product_image) VALUES (:product_title, :product_category_id, :product_price, :product_description, :short_desc, :product_quantity, :product_image)";
@@ -336,6 +338,62 @@ move_uploaded_file($file_tmp_name, UPLOAD_DIRECTORY . DS . $product_image);
 			$stmt->execute();
 			$lastId = intval($conn->lastInsertId());
 			set_message("New Product with id {$lastId} Just Added");
+			redirect("index.php?products");
+		}catch (\Exception $e){
+			throw $e;
+		}
+	}
+}
+
+/*************************** Updateding product*******************/
+function update_product(){
+global $conn;
+
+if(isset($_POST['update'])){
+
+		$product_title = ($_POST['product_title']);
+		$product_category_id = intval($_POST['product_category_id']);
+		$product_price = intval($_POST['product_price']);
+		$product_quantity = intval($_POST['product_quantity']);
+		$product_description = ($_POST['product_description']);
+		$short_desc = ($_POST['short_desc']);
+		$product_image = $_FILES['file']['name'];
+		$file_tmp_name = $_FILES['file']['tmp_name'];
+
+		if(empty($product_image)){
+			$get_pic = "SELECT product_image FROM products WHERE product_id = ?";
+			$stmt = $conn->prepare($get_pic);
+			$stmt->bindParam(1,$_GET['id']);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+foreach($result as $row){
+	$product_image = $row['product_image'];
+}
+
+move_uploaded_file($file_tmp_name, UPLOAD_DIRECTORY . DS . $product_image);
+		try{
+			$sql = "UPDATE products SET ";
+			$sql .= "product_title = ?, ";
+			$sql .= "product_category_id = ?, ";
+			$sql .= "product_price = ?, ";
+			$sql .= "product_description = ?, ";
+			$sql .= "short_desc = ?, ";
+			$sql .= "product_quantity = ?, ";
+			$sql .= "product_image = ? ";
+			$sql .= "WHERE product_Id = ?";
+			$stmt = $conn->prepare($sql);
+			$stmt->bindParam(1,$product_title);
+			$stmt->bindParam(2,$product_category_id);
+			$stmt->bindParam(3,$product_price);
+			$stmt->bindParam(4,$product_description);
+			$stmt->bindParam(5,$short_desc);
+			$stmt->bindParam(6,$product_quantity);
+			$stmt->bindParam(8,$_GET['id']);
+			$stmt->bindParam(7,$product_image);
+			$stmt->execute();
+			$lastId = intval($conn->lastInsertId());
+			set_message("Product has been updated");
 			redirect("index.php?products");
 		}catch (\Exception $e){
 			throw $e;

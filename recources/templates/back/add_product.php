@@ -1,4 +1,4 @@
-
+<?php add_product(); ?>
 <div class="col-md-12">
 
 <div class="row">
@@ -69,4 +69,3 @@
 </form>
 </div>
 <!-- /.container-fluid -->
-<?php add_product(); ?>
