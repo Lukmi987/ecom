@@ -295,6 +295,31 @@ DELIMITER;
 	}
 }
 
+function add_user(){
+if(isset($_POST['add_user'])){
+	global $conn;
+	$username = $_POST['username'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$user_photo = $_FILES['file']['name'];
+	$file_tmp_name = $_FILES['file']['tmp_name'];
+$password = password_hash($password, PASSWORD_DEFAULT);
+	try{
+		 $sql ="INSERT INTO users(username,email,password) VALUES(?,?,?)";
+		 $stmt = $conn->prepare($sql);
+		 $stmt->bindParam(1,$username);
+		 $stmt->bindParam(2,$email);
+		 $stmt->bindParam(3,$password);
+		 $stmt->execute();
+		 set_message("User Created");
+		 redirect("index.php?users");
+	} catch(\Exception $e){
+		throw $e;
+	}
+}
+
+}
+
  function get_products_in_shop_page(){
 	global $conn;
 	try{
