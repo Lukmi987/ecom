@@ -265,6 +265,36 @@ DELIMITER;
  }
 }
 
+/**************************** Users in Admin **************************/
+function display_users_in_admin() {
+	global $conn;
+	try{
+		 $sql ="SELECT * FROM users";
+		 $stmt = $conn->prepare($sql);
+		 $stmt->execute();
+		 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	} catch(\Exception $e){
+		throw $e;
+	}
+
+	foreach($result as $row){
+	 $user_id = $row['user_id'];
+	 $username = $row['username'];
+	 $email = $row['email'];
+
+$users = <<<DELIMITER
+	 <tr>
+			 <td>{$user_id}</td>
+			 <td>{$username}</td>
+			 <td>{$email}</td>
+			 <td><a class="btn btn-danger" href="../../recources/templates/back/delete_user.php?id={$user_id}"><span class="glyphicon glyphicon-remove"</span></a></td>
+
+	 </tr>
+DELIMITER;
+	 echo $users;
+	}
+}
+
  function get_products_in_shop_page(){
 	global $conn;
 	try{
@@ -297,9 +327,11 @@ $product_image = display_image($row['product_image']);
 DELIMETER;
 	echo $product;
 	}
-
-	//herodoc
  }
+
+ /********************** Users func *****************/
+
+
 
  function login_user(){
  	global $conn;

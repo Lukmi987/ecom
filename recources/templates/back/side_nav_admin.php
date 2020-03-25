@@ -19,7 +19,7 @@
                         <a href="index.php?categories"><i class="fa fa-fw fa-desktop"></i> Categories</a>
                     </li>
                     <li>
-                        <a href="users.html"><i class="fa fa-fw fa-wrench"></i>Users</a>
+                        <a href="index.php?users"><i class="fa fa-fw fa-wrench"></i>Users</a>
                     </li>
 
                 </ul>
