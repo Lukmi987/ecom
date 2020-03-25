@@ -523,4 +523,34 @@ DELIMETER;
 }
 
 
+function reports(){
+	global $conn;
+	try{
+	$sql = "SELECT * FROM reports";
+ 	$stmt = $conn->prepare($sql);
+ 	$stmt->execute();
+ 	$result= $stmt->fetchAll(PDO::FETCH_ASSOC);
+ 	} catch(\Exception $e) {
+ 	throw $e;
+ 	}
+
+	foreach ( $result as $row){
+		// we are detecting Get request at index.php in admin and then we send it to different places
+		//with Ampersand(&) we separate parameters
+
+$reports = <<<DELIMETER
+<tr>
+			 <td>{$row['report_id']}</td>
+			 <td>{$row['product_id']}</td>
+			 <td>{$row['order_id']}</td>
+			<td>{$row['product_price']}</td>
+			<td>{$row['product_title']}</td>
+			<td>{$row['product_quantity']}</td>
+			<td><a class="btn btn-danger" href="../../recources/templates/back/delete_report.php?id={$row['report_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
+	 </tr>
+DELIMETER;
+	echo $reports;
+	}
+}
+
 /***********************FRONT END FUNCTIONS******************/

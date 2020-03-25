@@ -40,6 +40,9 @@
                 if(isset($_GET['add_user'])){
                   include(TEMPLATE_BACK . "/add_user.php");
                 }
+                if(isset($_GET['reports'])){
+                  include(TEMPLATE_BACK . "/reports.php");
+                }
                 ?>
 
             </div>
